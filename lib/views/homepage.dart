@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
+import 'package:gtex_tutorial/views/detailpage.dart';
 import 'package:gtex_tutorial/views/product_tile.dart';
 import '../controllers/product_controller.dart';
+import '../models/product.dart';
 
 class HomePage extends StatelessWidget {
   final ProductController productController = Get.put(ProductController());
@@ -62,7 +64,22 @@ class HomePage extends StatelessWidget {
                       crossAxisSpacing: 8.0, // the space between each column
                     ),
                     itemBuilder: (_, index) {
-                      return ProductTile(productController.productList[index]);
+                      return InkWell(
+                        onTap: (() {
+                          Product p = productController.productList[index];
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => DetailPage(
+                                        p: p,
+                                        index: index,
+                                      ))));
+                        }),
+                        child: Hero(
+                            tag: productController.productList[index],
+                            child: ProductTile(
+                                productController.productList[index])),
+                      );
                     },
                   );
                 }
